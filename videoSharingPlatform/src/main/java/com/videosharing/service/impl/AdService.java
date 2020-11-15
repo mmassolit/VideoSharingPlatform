@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.videosharing.model.Ad;
@@ -19,10 +22,15 @@ import javassist.NotFoundException;
 public class AdService implements IAdService {
     @Autowired
     private AdRepository repository;
-
+    
     @Override
     public List<Ad> findAll() {
         return (List<Ad>) repository.findAll();
+    }
+    
+    @Override
+    public Page<Ad> findPaginated(int page, int size) {
+        return repository.findAll(PageRequest.of(page, size, Sort.by("dateCreated")));
     }
 
     @Override

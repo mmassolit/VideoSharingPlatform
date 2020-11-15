@@ -1,53 +1,56 @@
 package com.videosharing.service.impl;
 
-import platform_service.Account;
-import platform_service.Advertiser;
-import platform_service.User;
-import platform_service.VideoSharingPlatform;
+import lombok.AllArgsConstructor;
 
-public final class PaymentService {
-	private static void validatePayment(Advertiser advertiser, double amount){
-		double advertisersBalance = advertiser.getBalance();
-		boolean validCondition = amount > 0 && amount < advertisersBalance;
-		
-        if (!validCondition)
-            throw new IllegalArgumentException("Invalid value.");
-	}
-	
-	private static void validateWithdraw(double balance, double amount) {
-		if (balance < amount)
-			throw new IllegalArgumentException("Invalid value "
-					+ "(withdrawal amount has to be smaller than balance.");
-	}
-	
-	public void transferPayment(VideoSharingPlatform platform, User user, Advertiser advertiser, double amount) {
-		validatePayment(advertiser, amount);
-		
-		final double transactionFee = platform.getTransactionFee();
-		
-		double userAmount = amount * (1-transactionFee);
-		double platformAmount = amount * transactionFee;
-		
-		advertiser.decreaseBalance(amount);
-		user.increaseBalance(userAmount);
-		platform.increaseBalance(platformAmount);
-	}
-	
-	public void rechargeAdvertiserBalance(Advertiser advertiser, double amount) {
-		advertiser.increaseBalance(amount);
-	}
-	
-	public void rechargeUserBalance(User user, double amount) {
-		user.increaseBalance(amount);
-	}
-	
-	public void withdrawUserBalance(User user, double amount) {
-		validateWithdraw(user.getBalance(), amount);
-		user.decreaseBalance(amount);
-	}
-	
-	public void withdrawAdvertiserBalance(Advertiser advertiser, double amount) {
-		validateWithdraw(advertiser.getBalance(), amount);
-		advertiser.decreaseBalance(amount);
-	}
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.videosharing.api.dto.PaymentPayload;
+import com.videosharing.model.Payment;
+import com.videosharing.model.User;
+import com.videosharing.repository.PaymentRepository;
+import com.videosharing.service.IPaymentService;
+
+import javassist.NotFoundException;
+
+@Service
+@AllArgsConstructor
+public class PaymentService implements IPaymentService {
+    @Autowired
+    private PaymentRepository repository;
+
+    @Override
+    public List<Paymentr> findAll() {
+        return (List<Payment>) repository.findAll();
+    }
+    
+    @Override
+    public Page<Payment> findPaginated(int page, int size) {
+        return repository.findAll(PageRequest.of(page, size, Sort.by("dateCreated")));
+    }
+    
+    @Override
+    public Payment save(User paymentForSave) {
+        return repository.save(paymentForSave);
+    }
+
+    @Override
+    public Payment getById(String id) throws NotFoundException {
+        Optional<Payment> tempPayment = repository.findById(id);
+        if (tempPayment.isPresent())
+            return repository.findById(id).get();
+        else
+            throw new NotFoundException(String.format("Payment with id %s does not exist", id));
+    }
+
+    @Override
+    public void deleteById(String id) throws NotFoundException {
+        repository.delete(getById(id));
+    }
 }

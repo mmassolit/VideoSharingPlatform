@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.videosharing.model.Ad;
 import com.videosharing.model.Video;
 import com.videosharing.repository.VideoRepository;
 import com.videosharing.service.IVideoService;
@@ -24,7 +28,12 @@ public class VideoService implements IVideoService {
     public List<Video> findAll() {
         return (List<Video>) repository.findAll();
     }
-
+    
+    @Override
+    public Page<Video> findPaginated(int page, int size) {
+        return repository.findAll(PageRequest.of(page, size, Sort.by("dateCreated")));
+    }
+    
     @Override
     public Video save(Video videoForSave) {
         return repository.save(videoForSave);
