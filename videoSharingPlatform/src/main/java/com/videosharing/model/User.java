@@ -1,35 +1,32 @@
 package com.videosharing.model;
 
-import java.util.LinkedList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import video_service.Video;
+import javax.persistence.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
-public final class User extends Account {
-	private LinkedList<Video> videoList;
-	
-	public User(String name) {
-		super(name);
-		videoList = new LinkedList<Video>();
-	}
-	
-	public double getBalance() {
-		return balance;
-	}
-	
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-	
-	public LinkedList<Video> getVideoList() {
-		return videoList;
-	}
+@EnableAutoConfiguration
+@Entity
+@Table(name = "users")
 
-	public void setVideoList(LinkedList<Video> videoList) {
-		this.videoList = videoList;
-	}
-	
-	@Override
-	public String toString() {
-		return "User(name: " + name + "; uid: " + uid + "; balance: " + balance + ")";
-	}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public final class User {
+    @Id
+    private String id;
+    private ZonedDateTime dateCreated;
+    private String name;
+    private String surname;
+    private String email;
+    private Double balance;
+
+    public User(String name, String surname, String email) {
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), name, surname, email, 0.0);
+    }
 }

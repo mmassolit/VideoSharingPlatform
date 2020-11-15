@@ -1,11 +1,10 @@
 package com.videosharing.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.ZoneId;
@@ -14,24 +13,29 @@ import java.util.UUID;
 
 @EnableAutoConfiguration
 @Entity
-@Table(name = "ads")
+@Table(name = "payments")
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public final class Ad {
+public class Payment {
     @Id
     private String id;
     private ZonedDateTime dateCreated;
-    private double cpm;
-    private double budget;
+    
+    @JsonManagedReference
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id", nullable = false)
+    private User user;
     
     @JsonManagedReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "id", nullable = false)
     private Advertiser advertiser;
+    
+    private double amount;
 
-    public Ad(double cpm, double budget, Advertiser advertiser) {
-        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), cpm, budget, advertiser);
+    public Payment(User user, Advertiser advertiser, double amount){
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), user, advertiser, amount);
     }
 }
