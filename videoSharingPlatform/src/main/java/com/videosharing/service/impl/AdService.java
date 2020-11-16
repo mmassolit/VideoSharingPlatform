@@ -66,6 +66,10 @@ public class AdService implements IAdService {
         	throw new IllegalArgumentException("User doesn't have permission to create ads.");
         }
         
+        if (user.getBalance() < payload.getBudget()){
+        	throw new IllegalArgumentException("User's balance is to small for this budget.");
+        }
+        
         return save(new Ad(payload.getCpm(), payload.getBudget(), user));
     }
     

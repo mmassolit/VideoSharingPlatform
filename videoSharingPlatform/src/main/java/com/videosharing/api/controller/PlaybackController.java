@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.videosharing.VideoSharingPlatformApplication;
 import com.videosharing.api.dto.PlaybackPayload;
+import com.videosharing.model.Ad;
 import com.videosharing.model.Playback;
 import com.videosharing.service.IPlaybackService;
+import com.videosharing.service.impl.AdService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 public final class PlaybackController {
 	static final Logger log = LoggerFactory.getLogger(VideoSharingPlatformApplication.class);
+	private AdService adService;
 	
 	@Autowired
     private IPlaybackService playbackService;
@@ -34,7 +37,8 @@ public final class PlaybackController {
 
     @PostMapping
     public ResponseEntity<Playback> create(@RequestBody PlaybackPayload payload) throws NotFoundException {
-        return ResponseEntity.ok(playbackService.addPlayback(payload));
+    	Ad ad = adService.pickAd();
+        return ResponseEntity.ok(playbackService.addPlayback(payload.getUser(), payload.getVideo(), ad.getId()));
     }
 
     @GetMapping("{playbackId}")

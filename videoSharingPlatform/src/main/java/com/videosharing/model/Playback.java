@@ -1,7 +1,6 @@
 package com.videosharing.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.videosharing.service.impl.AdService;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Playback {
-	private static AdService adService;
 	
     @Id
     private String id;
@@ -42,7 +40,7 @@ public class Playback {
     @JoinColumn(name = "idAd", nullable = false)
     private Ad ad;
 
-    public Playback(User user, Video video){
-        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), user, video, adService.pickAd());
+    public Playback(User user, Video video, Ad ad){
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), user, video, ad);
     }
 }

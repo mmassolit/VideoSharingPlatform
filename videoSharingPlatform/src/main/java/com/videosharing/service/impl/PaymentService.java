@@ -58,7 +58,7 @@ public class PaymentService implements IPaymentService {
     }
     
     @Override
-    public Payment addPayment(String idUserFrom, string idUserTo, double amount) throws NotFoundException, IllegalArgumentException {
+    public Payment addPayment(String idUserFrom, String idUserTo, double amount) throws NotFoundException, IllegalArgumentException {
     	User userFrom = userService.getById(idUserFrom);
     	User userTo = userService.getById(idUserTo);
     	

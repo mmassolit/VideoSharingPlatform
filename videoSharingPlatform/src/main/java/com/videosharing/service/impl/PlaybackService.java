@@ -63,21 +63,21 @@ public class PlaybackService implements IPlaybackService {
     }
     
     @Override
-    public Playback addPlayback(PlaybackPayload payload) throws NotFoundException, IllegalArgumentException {
-    	User user = userService.getById(payload.getUser());
-    	Video video = videoService.getById(payload.getVideo());
-    	Ad ad = adService.getById(payload.getAd());
+    public Playback addPlayback(String idUser, String idVideo, String idAd) throws NotFoundException, IllegalArgumentException {
+    	User user = userService.getById(idUser);
+    	Video video = videoService.getById(idVideo);
+    	Ad ad = adService.getById(idAd);
     	
     	String idVideoCreator = video.getUser().getId();
     	String idAdCreator = ad.getUser().getId();
     	
     	double costPerView = ad.getCpm() / 1000;
     	
-    	videoService.updateViews(payload.getVideo());
-    	adService.updateBudget(payload.getAd(), - costPerView);
+    	videoService.updateViews(idVideo);
+    	adService.updateBudget(idAd, - costPerView);
     	paymentService.addPayment(idAdCreator, idVideoCreator, costPerView);
     	
-        return save(new Playback(user, video));
+        return save(new Playback(user, video, ad));
     }
     
     
