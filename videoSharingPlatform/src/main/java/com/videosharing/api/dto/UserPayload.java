@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Email;
 
 @Data
@@ -29,8 +28,4 @@ public final class UserPayload {
     @NotNull(message = "Email field is required.")
     @Email(message = "Enter a valid email.")
     private String email;
-    
-    @NotNull(message = "Balance field is required.")
-    @PositiveOrZero(message = "Balance can't be negative.")
-    private double balance;
 }
