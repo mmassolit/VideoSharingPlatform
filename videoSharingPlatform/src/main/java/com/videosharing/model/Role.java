@@ -19,12 +19,13 @@ import java.util.UUID;
 @Entity
 public class Role {
     @Id
-    private String role_id;
+    private String id;
     
     private String name;
-    private String type;
-
-    public Role(String name, String type) { 
-    	this(UUID.randomUUID().toString(), name, type); 
+    private boolean allowedAds;
+    private boolean allowedVideos;
+    
+    public Role(String name, boolean allowedAds, boolean allowedVideos) { 
+    	this(UUID.randomUUID().toString(), name, allowedAds, allowedVideos); 
     }
 }

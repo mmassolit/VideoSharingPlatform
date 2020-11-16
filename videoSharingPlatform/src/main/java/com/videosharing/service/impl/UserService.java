@@ -11,7 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.videosharing.api.dto.AdPayload;
+import com.videosharing.api.dto.UserPayload;
 import com.videosharing.model.Ad;
+import com.videosharing.model.Advertiser;
+import com.videosharing.model.Role;
 import com.videosharing.model.User;
 import com.videosharing.repository.UserRepository;
 import com.videosharing.service.IUserService;
@@ -21,6 +25,8 @@ import javassist.NotFoundException;
 @Service
 @AllArgsConstructor
 public class UserService implements IUserService {
+	private final RoleService roleService;
+	
     @Autowired
     private UserRepository repository;
 
@@ -51,5 +57,11 @@ public class UserService implements IUserService {
     @Override
     public void deleteById(String id) throws NotFoundException {
         repository.delete(getById(id));
+    }
+    
+    @Override
+    public User addUser(UserPayload payload) throws NotFoundException {
+        Role role = roleService.getById(payload.getRole());
+        return save(new User(role, payload.getName(), payload.getSurname(), payload.getEmail()));
     }
 }

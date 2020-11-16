@@ -1,38 +1,42 @@
+package com.videosharing.api.controller;
+
 import javassist.NotFoundException;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.videosharing.VideoSharingPlatformApplication;
 import com.videosharing.api.dto.UserPayload;
 import com.videosharing.model.User;
 import com.videosharing.service.IUserService;
 
-import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("api/clients")
+@RequestMapping("api/users")
 @AllArgsConstructor
 public final class UserController {
-    private final IUserService userService;
+	static final Logger log = LoggerFactory.getLogger(VideoSharingPlatformApplication.class);
+	
+	@Autowired
+    private IUserService userService;
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<List<User>> index(@RequestParam("page") int page,
-                                              @RequestParam("size") int size)
-            throws NotFoundException {
-        Page<User> resultPage = userService.findPaginated(page, size);
-        if (page >= resultPage.getTotalPages())
-            throw new NotFoundException(String.format("Page %d of size %d does not exist", page, size));
-
-        return ResponseEntity.ok(resultPage.getContent());
+    @GetMapping
+    public ResponseEntity<List<User>> index() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@Valid @RequestBody UserPayload payload) {
-        User newUser = new User(payload.getName(), payload.getSurname(), payload.getEmail());
-        
+    public ResponseEntity<User> create(@RequestBody UserPayload payload) {
+        User newUser = new User(payload.getName(),
+                payload.getSurname(),
+                payload.getEmail());
         return ResponseEntity.ok(userService.save(newUser));
     }
 

@@ -25,12 +25,12 @@ public class Payment {
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "idUser", nullable = false)
     private User user;
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "idAdvertiser", nullable = false)
     private Advertiser advertiser;
     
     private double amount;

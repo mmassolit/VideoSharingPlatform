@@ -11,7 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.videosharing.model.Ad;
+import com.videosharing.api.dto.AdPayload;
+import com.videosharing.api.dto.VideoPayload;
+import com.videosharing.model.Role;
+import com.videosharing.model.User;
 import com.videosharing.model.Video;
 import com.videosharing.repository.VideoRepository;
 import com.videosharing.service.IVideoService;
@@ -21,6 +24,8 @@ import javassist.NotFoundException;
 @Service
 @AllArgsConstructor
 public class VideoService implements IVideoService {
+	private final UserService userService;
+	
     @Autowired
     private VideoRepository repository;
 
@@ -51,5 +56,17 @@ public class VideoService implements IVideoService {
     @Override
     public void deleteById(String id) throws NotFoundException {
         repository.delete(getById(id));
+    }
+    
+    @Override
+    public Video addVideo(VideoPayload payload) throws NotFoundException {
+        User user = userService.getById(payload.getUser());
+        Role role = user.getRole();
+        
+        if (!role.isAllowedVideos()){
+        	throw new NotFoundException("User not found or doesn't have permission to post an Ad.");
+        }
+        
+        return save(new Video(payload.getName(), user));
     }
 }

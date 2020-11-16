@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.videosharing.api.dto.AdPayload;
 import com.videosharing.model.Ad;
 
 import javassist.NotFoundException;
 
 
-public interface IAdService {
+public interface IAdService {	
 	List<Ad> findAll();
 
 	Page<Ad> findPaginated(int page, int size);
@@ -19,4 +20,6 @@ public interface IAdService {
     Ad getById(String adId) throws NotFoundException;
 
     void deleteById(String adId) throws NotFoundException;
+    
+    Ad addAd(AdPayload payload) throws NotFoundException;
 }

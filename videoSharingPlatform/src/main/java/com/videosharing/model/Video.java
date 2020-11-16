@@ -28,7 +28,7 @@ public final class Video {
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "idUser", nullable = false)
     private User user;
 
     public Video(String name, User userCreator) {

@@ -28,10 +28,10 @@ public final class Ad {
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false)
-    private Advertiser advertiser;
+    @JoinColumn(name = "idUser", nullable = false)
+    private User user;
 
-    public Ad(double cpm, double budget, Advertiser advertiser) {
-        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), cpm, budget, advertiser);
+    public Ad(double cpm, double budget, User user) {
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), cpm, budget, user);
     }
 }
