@@ -69,4 +69,12 @@ public class VideoService implements IVideoService {
         
         return save(new Video(payload.getName(), user));
     }
+    
+    @Override
+    public void updateViews(String id) throws NotFoundException {
+    	Video video = getById(id);
+    	int currentViews = video.getViews();
+    	
+    	video.setViews(currentViews + 1);
+    }
 }

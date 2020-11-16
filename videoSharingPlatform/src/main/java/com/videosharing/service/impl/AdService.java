@@ -68,4 +68,34 @@ public class AdService implements IAdService {
         
         return save(new Ad(payload.getCpm(), payload.getBudget(), user));
     }
+    
+    @Override
+    public Ad pickAd() {
+    	List<Ad> adList = findAll();
+    	
+    	double maxCpm = adList.get(0).getCpm();
+    	int maxIndex = 0;
+    	
+    	 for (int i = 0; i < adList.size(); i++) {
+    		 double cpm = adList.get(i).getCpm()
+             if (cpm > maxCpm) {
+            	 maxIndex = i;
+            	 maxCpm = cpm;
+             }
+         }
+    	 
+    	 return adList.get(maxIndex);
+    }
+    
+    @Override
+    public void updateBudget(String id, double amount) throws NotFoundException, IllegalArgumentException {
+    	Ad ad = getById(id);
+    	double currentBudget = ad.getBudget();
+    	
+    	if (currentBudget + amount < 0) {
+    		throw new IllegalArgumentException("Ad doesn't have enough budget for this transaction.");
+    	}
+    	
+    	ad.setBudget(currentBudget + amount);
+    }
 }

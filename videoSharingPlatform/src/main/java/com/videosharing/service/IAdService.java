@@ -22,4 +22,8 @@ public interface IAdService {
     void deleteById(String adId) throws NotFoundException;
     
     Ad addAd(AdPayload payload) throws NotFoundException, IllegalArgumentException;
+    
+    Ad pickAd();
+    
+    void updateBudget(String adId, double amount) throws NotFoundException, IllegalArgumentException;
 }

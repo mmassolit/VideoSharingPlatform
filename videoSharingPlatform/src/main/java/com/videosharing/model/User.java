@@ -32,7 +32,7 @@ public final class User {
     private String name;
     private String surname;
     private String email;
-    private Double balance;
+    private double balance;
     
     public User(Role role, String name, String surname, String email) {
         this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), role, name, surname, email, 0.0);
