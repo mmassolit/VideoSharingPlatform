@@ -11,12 +11,12 @@ public final class PaymentPayload {
 	@NotNull(message = "User ID field is required.")
     @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
             message = "User ID must be valid UUID string.")
-    private final String user;
+    private final String userFrom;
     
-	@NotNull(message = "Advertiser ID field is required.")
+	@NotNull(message = "User ID field is required.")
     @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
-            message = "Advertiser ID must be valid UUID string.")
-    private final String advertiser;
+            message = "User ID must be valid UUID string.")
+    private final String userTo;
 	
 	@NotNull(message = "Amount field is required.")
     @Positive(message = "Amount must be positive.")

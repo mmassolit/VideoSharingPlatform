@@ -22,4 +22,6 @@ public interface IUserService {
     void deleteById(String userId) throws NotFoundException;
     
     User addUser(UserPayload payload) throws NotFoundException;
+    
+    void updateBalance(String userId, double amount) throws NotFoundException, IllegalArgumentException;
 }

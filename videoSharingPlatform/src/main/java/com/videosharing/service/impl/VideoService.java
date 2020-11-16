@@ -59,12 +59,12 @@ public class VideoService implements IVideoService {
     }
     
     @Override
-    public Video addVideo(VideoPayload payload) throws NotFoundException {
+    public Video addVideo(VideoPayload payload) throws NotFoundException, IllegalArgumentException {
         User user = userService.getById(payload.getUser());
         Role role = user.getRole();
         
         if (!role.isAllowedVideos()){
-        	throw new NotFoundException("User not found or doesn't have permission to post an Ad.");
+        	throw new IllegalArgumentException("User doesn't have permission to post videos.");
         }
         
         return save(new Video(payload.getName(), user));

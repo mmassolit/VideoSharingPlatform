@@ -24,7 +24,6 @@ import javassist.NotFoundException;
 @AllArgsConstructor
 public class AdService implements IAdService {
 	private final UserService userService;
-	private final RoleService roleService;
 	
     @Autowired
     private AdRepository repository;
@@ -59,12 +58,12 @@ public class AdService implements IAdService {
     }
     
     @Override
-    public Ad addAd(AdPayload payload) throws NotFoundException {
+    public Ad addAd(AdPayload payload) throws NotFoundException, IllegalArgumentException {
         User user = userService.getById(payload.getUser());
         Role role = user.getRole();
         
         if (!role.isAllowedAds()){
-        	throw new NotFoundException("User not found or doesn't have permission to post an Ad.");
+        	throw new IllegalArgumentException("User doesn't have permission to create ads.");
         }
         
         return save(new Ad(payload.getCpm(), payload.getBudget(), user));

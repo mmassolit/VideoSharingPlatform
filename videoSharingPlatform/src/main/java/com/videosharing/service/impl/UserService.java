@@ -64,4 +64,16 @@ public class UserService implements IUserService {
         Role role = roleService.getById(payload.getRole());
         return save(new User(role, payload.getName(), payload.getSurname(), payload.getEmail()));
     }
+    
+    @Override
+    public void updateBalance(String id, double amount) throws NotFoundException, IllegalArgumentException {
+    	User user = getById(id);
+    	private double currentBalance = user.getBalance();
+    	
+    	if (currentBalance + amount < 0) {
+    		throw new IllegalArgumentException("User doesn't have enough balance for this transaction.");
+    	}
+    	
+    	user.setBalance(currentBalance + amount);
+    }
 }

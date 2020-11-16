@@ -25,17 +25,17 @@ public class Payment {
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idUser", nullable = false)
-    private User user;
+    @JoinColumn(name = "idUserFrom", nullable = false)
+    private User userFrom;
     
     @JsonManagedReference
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idAdvertiser", nullable = false)
-    private Advertiser advertiser;
+    @JoinColumn(name = "idUserTo", nullable = false)
+    private User userTo;
     
     private double amount;
 
-    public Payment(User user, Advertiser advertiser, double amount){
-        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), user, advertiser, amount);
+    public Payment(User userFrom, User userTo, double amount){
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), userFrom, userTo, amount);
     }
 }

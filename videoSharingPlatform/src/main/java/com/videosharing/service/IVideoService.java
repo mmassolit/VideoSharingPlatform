@@ -21,5 +21,5 @@ public interface IVideoService {
 
     void deleteById(String videoId) throws NotFoundException;
     
-    Video addVideo(VideoPayload payload) throws NotFoundException;
+    Video addVideo(VideoPayload payload) throws NotFoundException, IllegalArgumentException;
 }

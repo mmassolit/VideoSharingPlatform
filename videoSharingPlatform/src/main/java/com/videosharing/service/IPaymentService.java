@@ -20,4 +20,6 @@ public interface IPaymentService {
 	Payment getById(String paymentId) throws NotFoundException;
 
     void deleteById(String paymentId) throws NotFoundException;
+    
+    Payment addPayment(PaymentPayload payload) throws NotFoundException, IllegalArgumentException;
 }

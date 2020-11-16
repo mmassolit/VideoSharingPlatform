@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.videosharing.api.dto.PaymentPayload;
+import com.videosharing.model.Ad;
 import com.videosharing.model.Payment;
 import com.videosharing.model.User;
 import com.videosharing.repository.PaymentRepository;
@@ -22,11 +23,13 @@ import javassist.NotFoundException;
 @Service
 @AllArgsConstructor
 public class PaymentService implements IPaymentService {
+	private final UserService userService;
+	
     @Autowired
     private PaymentRepository repository;
 
     @Override
-    public List<Paymentr> findAll() {
+    public List<Payment> findAll() {
         return (List<Payment>) repository.findAll();
     }
     
@@ -36,7 +39,7 @@ public class PaymentService implements IPaymentService {
     }
     
     @Override
-    public Payment save(User paymentForSave) {
+    public Payment save(Payment paymentForSave) {
         return repository.save(paymentForSave);
     }
 
@@ -53,4 +56,21 @@ public class PaymentService implements IPaymentService {
     public void deleteById(String id) throws NotFoundException {
         repository.delete(getById(id));
     }
+    
+    @Override
+    public Payment addPayment(PaymentPayload payload) throws NotFoundException, IllegalArgumentException {
+    	User userFrom = userService.getById(payload.getUserFrom());
+    	User userTo = userService.getById(payload.getUserTo());
+    	
+    	if (userFrom == userTo) {
+    		throw new IllegalArgumentException("Users are equal.");
+    	}
+    	
+    	userService.updateBalance(payload.getUserFrom(), -payload.getAmount());
+    	userService.updateBalance(payload.getUserTo(), payload.getAmount());
+    	
+        return save(new Payment(userFrom, userTo, payload.getAmount()));
+    }
+    
+    
 }
