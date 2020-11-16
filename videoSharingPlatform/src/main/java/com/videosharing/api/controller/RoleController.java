@@ -34,7 +34,7 @@ public final class RoleController {
 
     @PostMapping
     public ResponseEntity<Role> create(@RequestBody RolePayload payload) {
-    	Role newRole = new Role(payload.getName())
+    	Role newRole = new Role(payload.getName(), payload.isAllowedAds(), payload.isAllowedVideos());
         return ResponseEntity.ok(roleService.save(newRole));
     }
 

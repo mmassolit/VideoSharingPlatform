@@ -33,11 +33,8 @@ public final class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody UserPayload payload) {
-        User newUser = new User(payload.getName(),
-                payload.getSurname(),
-                payload.getEmail());
-        return ResponseEntity.ok(userService.save(newUser));
+    public ResponseEntity<User> create(@RequestBody UserPayload payload) throws NotFoundException {
+        return ResponseEntity.ok(userService.addUser(payload));
     }
 
     @GetMapping("{userId}")
