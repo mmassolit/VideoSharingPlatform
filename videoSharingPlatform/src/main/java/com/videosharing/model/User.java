@@ -30,11 +30,12 @@ public final class User {
     private Role role;
     
     private String name;
-    private String surname;
+    private String password;
+    
     private String email;
     private double balance;
     
-    public User(Role role, String name, String surname, String email) {
-        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), role, name, surname, email, 0.0);
+    public User(Role role, String name, String password, String email) {
+        this(UUID.randomUUID().toString(), ZonedDateTime.now(ZoneId.of("UTC+3")), role, name, password, email, 0.0);
     }
 }

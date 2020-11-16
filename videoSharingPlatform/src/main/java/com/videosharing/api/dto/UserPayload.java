@@ -19,10 +19,12 @@ public final class UserPayload {
             message = "Name should consist only of letters and have length from 2 to 20 characters.")
     private String name;
     
-    @NotNull(message = "Surname field is required.")
-    @Pattern(regexp = "^[a-zA-Z]{2,20}",
-            message = "Surname should only consist of letters and have length from 2 to 20 characters.")
-    private String surname;
+    @NotNull(message = "Password field is required.")
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,}).{8,}$",
+            message = "Passowrd should contain at least 1 upper case letter, 1 lowwer case letter "
+            		+ "and 1 digit and have length at least 8 characters.")
+    
+    private String password;
     
     @NotNull(message = "Email field is required.")
     @Email(message = "Enter a valid email.")

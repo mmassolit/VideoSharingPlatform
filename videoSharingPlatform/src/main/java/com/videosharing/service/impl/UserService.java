@@ -62,7 +62,7 @@ public class UserService implements IUserService {
     @Override
     public User addUser(UserPayload payload) throws NotFoundException {
         Role role = roleService.getById(payload.getRole());
-        return save(new User(role, payload.getName(), payload.getSurname(), payload.getEmail()));
+        return save(new User(role, payload.getName(), payload.getPassword(), payload.getEmail()));
     }
     
     @Override

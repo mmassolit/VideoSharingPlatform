@@ -38,7 +38,7 @@ public final class PlaybackController {
     }
 
     @GetMapping("{playbackId}")
-    public ResponseEntity<Payment> show(@PathVariable String playbackId) throws NotFoundException {
+    public ResponseEntity<Playback> show(@PathVariable String playbackId) throws NotFoundException {
         return ResponseEntity.ok(playbackService.getById(playbackId));
     }
 
