@@ -58,18 +58,18 @@ public class PaymentService implements IPaymentService {
     }
     
     @Override
-    public Payment addPayment(PaymentPayload payload) throws NotFoundException, IllegalArgumentException {
-    	User userFrom = userService.getById(payload.getUserFrom());
-    	User userTo = userService.getById(payload.getUserTo());
+    public Payment addPayment(String idUserFrom, string idUserTo, double amount) throws NotFoundException, IllegalArgumentException {
+    	User userFrom = userService.getById(idUserFrom);
+    	User userTo = userService.getById(idUserTo);
     	
     	if (userFrom == userTo) {
     		throw new IllegalArgumentException("Users are equal.");
     	}
     	
-    	userService.updateBalance(payload.getUserFrom(), -payload.getAmount());
-    	userService.updateBalance(payload.getUserTo(), payload.getAmount());
+    	userService.updateBalance(idUserFrom, -amount);
+    	userService.updateBalance(idUserTo, amount);
     	
-        return save(new Payment(userFrom, userTo, payload.getAmount()));
+        return save(new Payment(userFrom, userTo, amount));
     }
     
     

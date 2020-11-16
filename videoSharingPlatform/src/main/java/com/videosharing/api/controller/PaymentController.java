@@ -34,7 +34,7 @@ public final class PaymentController {
 
     @PostMapping
     public ResponseEntity<Payment> create(@RequestBody PaymentPayload payload) throws NotFoundException {
-        return ResponseEntity.ok(paymentService.addPayment(payload));
+        return ResponseEntity.ok(paymentService.addPayment(payload.getUserFrom(), payload.getUserTo(), payload.getAmount()));
     }
 
     @GetMapping("{paymentId}")

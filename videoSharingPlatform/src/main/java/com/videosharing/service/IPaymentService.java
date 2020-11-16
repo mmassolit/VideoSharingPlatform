@@ -21,5 +21,5 @@ public interface IPaymentService {
 
     void deleteById(String paymentId) throws NotFoundException;
     
-    Payment addPayment(PaymentPayload payload) throws NotFoundException, IllegalArgumentException;
+    Payment addPayment(String idUserFrom, String idUserTo, double amount) throws NotFoundException, IllegalArgumentException;
 }

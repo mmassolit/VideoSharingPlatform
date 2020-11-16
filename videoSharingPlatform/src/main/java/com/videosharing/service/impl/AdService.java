@@ -77,8 +77,10 @@ public class AdService implements IAdService {
     	int maxIndex = 0;
     	
     	 for (int i = 0; i < adList.size(); i++) {
-    		 double cpm = adList.get(i).getCpm()
-             if (cpm > maxCpm) {
+    		 double cpm = adList.get(i).getCpm();
+    		 double budget = adList.get(i).getBudget();
+    		 
+             if (cpm > maxCpm && cpm <= budget) {
             	 maxIndex = i;
             	 maxCpm = cpm;
              }
